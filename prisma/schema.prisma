@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AccountingFirm {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(120)
+  email     String    @unique @db.VarChar(120)
+  password  String    @db.VarChar(45)
+  cnpj      String    @unique @db.VarChar(45)
+  phone     String    @db.VarChar(45)
+  fantasy_name String? @db.VarChar(120)
+  companies Company[]
+}
+
+model Company {
+  id               Int      @id @default(autoincrement())
+  name             String   @db.VarChar(120)
+  trade_name       String?  @db.VarChar(120)
+  cnpj             String   @unique @db.VarChar(45)
+  activity         String?  @db.VarChar(120)
+  accounting_fee   Decimal  @db.Decimal(10, 2)
+  email            String   @unique @db.VarChar(120)
+
+  accountingFirm   AccountingFirm @relation(fields: [accounting_firm_id], references: [id])
+  accounting_firm_id Int
+
+  payments         Payment[]
+}
+
+model Payment {
+  id               Int       @id @default(autoincrement())
+  reference_month  DateTime  @db.Date
+  value            Decimal   @db.Decimal(10, 2)
+  status           String    @db.VarChar(45)
+  payment_date     DateTime? @db.Date
+  due_date         DateTime  @db.Date
+
+  company          Company   @relation(fields: [company_id], references: [id])
+  company_id       Int
+}
