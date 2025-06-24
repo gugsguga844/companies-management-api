@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common'; // Adicione Post e Body
+import { Controller, Post, Body, Get, Param, ParseIntPipe } from '@nestjs/common'; // Adicione Post e Body
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto'; // Importe o DTO
 
@@ -16,4 +16,14 @@ export class CompaniesController {
     // 3. Se for válido, chama o serviço. Se não, retorna um erro 400.
     return this.companiesService.create(createCompanyDto);
   }
-}
+
+  @Get()
+  get() {
+    return this.companiesService.get();
+  }
+
+  @Get(':id')
+  getOne(@Param('id', ParseIntPipe) id:number) {
+    return this.companiesService.getOne(id);
+  }
+} 
