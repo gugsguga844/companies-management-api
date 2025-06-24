@@ -2,9 +2,10 @@
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service'; // Importe o PrismaService
 import { CreateCompanyDto } from './dto/create-company.dto'; // Importe nosso DTO
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()
 export class CompaniesService {
@@ -30,13 +31,27 @@ export class CompaniesService {
   }
 
   async getOne(id: number) {
-    if (!id) {
-      throw new BadRequestException('ID inválido');
-    }
-    return this.prisma.company.findUnique({
+    const company = await this.prisma.company.findUnique({
       where: {
         id,
       },
+    });
+
+    if (!company) {
+      throw new NotFoundException(`Company ${id} not found`);
+    }
+
+    return company;
+  }
+
+  async update(id: number, updateCompanyDto: UpdateCompanyDto) {
+    await this.getOne(id)
+
+    return this.prisma.company.update({
+      where: {
+        id,
+      },
+      data: updateCompanyDto,
     });
   }
 }

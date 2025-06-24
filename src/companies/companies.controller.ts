@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe } from '@nestjs/common'; // Adicione Post e Body
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch } from '@nestjs/common'; // Adicione Post e Body
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto'; // Importe o DTO
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Controller('companies')
 export class CompaniesController {
@@ -25,5 +26,10 @@ export class CompaniesController {
   @Get(':id')
   getOne(@Param('id', ParseIntPipe) id:number) {
     return this.companiesService.getOne(id);
+  }
+
+  @Patch(':id')
+  updateData(@Param('id', ParseIntPipe) id:number, @Body() updateCompanyDto: UpdateCompanyDto) {
+    return this.companiesService.update(id, updateCompanyDto);
   }
 } 
