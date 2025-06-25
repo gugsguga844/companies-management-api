@@ -54,4 +54,14 @@ export class CompaniesService {
       data: updateCompanyDto,
     });
   }
+
+  async delete(id: number) {
+    await this.getOne(id)
+    
+    return this.prisma.company.delete({
+      where: {
+        id,
+      }
+    });
+  }
 }

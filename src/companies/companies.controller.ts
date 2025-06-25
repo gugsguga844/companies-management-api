@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch } from '@nestjs/common'; // Adicione Post e Body
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete } from '@nestjs/common'; // Adicione Post e Body
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto'; // Importe o DTO
 import { UpdateCompanyDto } from './dto/update-company.dto';
@@ -31,5 +31,10 @@ export class CompaniesController {
   @Patch(':id')
   updateData(@Param('id', ParseIntPipe) id:number, @Body() updateCompanyDto: UpdateCompanyDto) {
     return this.companiesService.update(id, updateCompanyDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.companiesService.delete(id);
   }
 } 
