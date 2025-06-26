@@ -3,6 +3,7 @@ import {
     IsNumber,
     IsOptional,
     IsString,
+    IsInt,
 } from 'class-validator';
 
 export class UpdateCompanyDto {
@@ -24,6 +25,10 @@ email?: string;
 @IsOptional()
 @IsNumber()
 accounting_fee?: number;
+
+@IsOptional()
+@IsInt()
+billing_due_day?: number;
 
 @IsOptional()
 activity?: string;
