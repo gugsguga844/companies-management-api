@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -18,9 +17,9 @@ model AccountingFirm {
   id        Int       @id @default(autoincrement())
   name      String    @db.VarChar(120)
   email     String    @unique @db.VarChar(120)
-  password  String    @db.VarChar(45)
+  password  String    @db.VarChar(120)
   cnpj      String    @unique @db.VarChar(45)
-  phone     String    @db.VarChar(45)
+  phone     String?    @db.VarChar(45)
   fantasy_name String? @db.VarChar(120)
   companies Company[]
 }

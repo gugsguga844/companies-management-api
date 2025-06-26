@@ -1,21 +1,24 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete } from '@nestjs/common'; // Adicione Post e Body
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete, UseGuards } from '@nestjs/common'; // Adicione Post e Body
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto'; // Importe o DTO
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { LoggedInUser } from 'src/auth/decorators/logged-in-user.decorator';
 
 @Controller('companies')
+@UseGuards(AuthGuard)
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {
     console.log('CompaniesController carregado');
   }
 
   @Post() // Escuta requisições POST para /companies
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    // 1. O decorador @Body() extrai o corpo da requisição.
-    // 2. O NestJS, junto com o ValidationPipe que configuraremos, valida
-    //    automaticamente o corpo contra o CreateCompanyDto.
-    // 3. Se for válido, chama o serviço. Se não, retorna um erro 400.
-    return this.companiesService.create(createCompanyDto);
+  create(
+    @Body() createCompanyDto: CreateCompanyDto,
+    @LoggedInUser() firmPayload: { sub: number; email: string }, // Decorator contra o erro de any do lint
+  ) {
+    const loggedInFirmId = firmPayload.sub;
+    return this.companiesService.create(createCompanyDto, loggedInFirmId);
   }
 
   @Get()

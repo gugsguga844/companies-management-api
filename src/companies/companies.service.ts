@@ -14,14 +14,14 @@ export class CompaniesService {
 
   // 2. Criamos o método 'create'
   // Ele recebe os dados validados (graças ao DTO) do controller
-  async create(createCompanyDto: CreateCompanyDto) {
+  async create(createCompanyDto: CreateCompanyDto, accounting_firm_id: number) {
     // 3. Usamos o Prisma para criar uma nova empresa no banco
     // NOTA: Por enquanto, vamos "chumbar" o accounting_firm_id com o valor 1.
     // Na Sprint de Autenticação, vamos substituir isso pelo ID do usuário logado.
     return this.prisma.company.create({
       data: {
         ...createCompanyDto,
-        accounting_firm_id: 1, // << VALOR PROVISÓRIO
+        accounting_firm_id: accounting_firm_id, // << VALOR PROVISÓRIO
       },
     });
   }
