@@ -31,31 +31,45 @@ export class CompaniesController {
   @ApiResponse({ status: 401, description: 'Não autorizado. Token inválido ou expirado.' })
   @ApiOperation({ summary: 'Retorna todas as empresas cadastradas' })
   @Get()
-  get() {
-    return this.companiesService.get();
+  get(
+    @LoggedInUser() firmPayload: { sub: number; email: string },
+  ) {
+    const loggedInFirmId = firmPayload.sub;
+    return this.companiesService.get(loggedInFirmId);
   }
 
   @ApiResponse({ status: 200, description: 'Empresa retornada com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado. Token inválido ou expirado.' })
   @ApiOperation({ summary: 'Retorna uma empresa específica pelo ID' })
   @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id:number) {
-    return this.companiesService.getOne(id);
+  getOne(
+    @LoggedInUser() firmPayload: { sub: number; email: string },
+    @Param('id', ParseIntPipe) id:number,
+  ) {
+    const loggedInFirmId = firmPayload.sub;
+    return this.companiesService.getOne(id, loggedInFirmId);
   }
 
   @ApiResponse({ status: 200, description: 'Empresa atualizada com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado. Token inválido ou expirado.' })
   @ApiOperation({ summary: 'Atualiza os dados de uma empresa específica pelo ID' })
   @Patch(':id')
-  updateData(@Param('id', ParseIntPipe) id:number, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.companiesService.update(id, updateCompanyDto);
+  updateData(
+    @LoggedInUser() firmPayload: { sub: number; email: string },
+    @Param('id', ParseIntPipe) id:number, @Body() updateCompanyDto: UpdateCompanyDto) {
+    const loggedInFirmId = firmPayload.sub;
+    return this.companiesService.update(id, updateCompanyDto, loggedInFirmId);
   }
 
   @ApiResponse({ status: 200, description: 'Empresa deletada com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado. Token inválido ou expirado.' })
   @ApiOperation({ summary: 'Remove uma empresa específica pelo ID' })
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
-    return this.companiesService.delete(id);
+  delete(
+    @LoggedInUser() firmPayload: { sub: number; email: string },
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const loggedInFirmId = firmPayload.sub;
+    return this.companiesService.delete(id, loggedInFirmId);
   }
 } 

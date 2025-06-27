@@ -3,12 +3,19 @@ import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common'; // Importe o ValidationPipe
 import { HttpExceptionFilter } from './common/filters/http-exception.filter'; // 1. Importe o filtro
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe()); // <-- ADICIONE ESTA LINHA
-  app.useGlobalFilters(new HttpExceptionFilter()); // <-- ADICIONE ESTA LINHA
+  // ValidationPipe que valida os dados de entrada
+  app.useGlobalPipes(new ValidationPipe());
+
+  // Filtro de exceções global
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  // Interceptor que padroniza as respostas de sucesso { "data": ... }
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   app.enableVersioning({
     type: VersioningType.URI,
