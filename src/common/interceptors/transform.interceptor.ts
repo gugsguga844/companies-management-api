@@ -19,8 +19,6 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
-    // O next.handle() é o momento em que o controller é executado.
-    // O .pipe(map(...)) acontece DEPOIS que a resposta do controller chega.
     return next.handle().pipe(map((data) => ({ data })));
   }
 }

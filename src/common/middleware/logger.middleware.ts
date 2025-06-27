@@ -7,6 +7,6 @@ export class LoggerMiddleware implements NestMiddleware {
     console.log(
       `[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`,
     );
-    next(); // CRUCIAL: Chama o próximo middleware ou a rota. Sem isso, a requisição para aqui.
+    next();
   }
 }

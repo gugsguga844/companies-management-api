@@ -22,11 +22,8 @@ export class CompaniesService {
     const paymentsToCreate = [];
     const today = new Date();
 
-    // 2. Loop para criar pagamentos para os próximos 12 meses
     for (let i = 0; i < 12; i++) {
-    // Calcula o mês de referência para cada iteração
     const referenceMonth = new Date(today.getFullYear(), today.getMonth() + i, 1);
-    
     const paymentData = {
       reference_month: referenceMonth,
       value: newCompany.accounting_fee,
@@ -37,14 +34,12 @@ export class CompaniesService {
     paymentsToCreate.push(paymentData);
     }
 
-    // 3. Criar todos os pagamentos em lote no banco de dados
     if (paymentsToCreate.length > 0) {
       await this.prisma.payment.createMany({
         data: paymentsToCreate,
     });
     }
   
-    // Retorna a empresa recém-criada
     return newCompany;
   }
 
@@ -80,10 +75,9 @@ export class CompaniesService {
     });
   }
 
-  async delete(id: number, accounting_firm_id: number): Promise<void> { // Agora retorna void
-    await this.getOne(id, accounting_firm_id); // Garante que a empresa ativa existe
+  async delete(id: number, accounting_firm_id: number): Promise<void> {
+    await this.getOne(id, accounting_firm_id); 
   
-    // A lógica de limpar faturas futuras pendentes continua ótima!
     const today = new Date();
     const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     await this.prisma.payment.deleteMany({
@@ -94,7 +88,6 @@ export class CompaniesService {
       },
     });
   
-    // A grande mudança: em vez de deletar, nós desativamos a empresa.
     await this.prisma.company.update({
       where: { id },
       data: { is_active: false },

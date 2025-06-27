@@ -3,8 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-// Este decorador irá extrair o objeto 'firm' que nós anexamos
-// na requisição lá no AuthGuard.
+
 export const LoggedInUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();

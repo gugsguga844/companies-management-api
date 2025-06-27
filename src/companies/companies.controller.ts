@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete, UseGuards } from '@nestjs/common'; // Adicione Post e Body
+import { Controller, Post, Body, Get, Param, ParseIntPipe, Patch, Delete, UseGuards } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
-import { CreateCompanyDto } from './dto/create-company.dto'; // Importe o DTO
+import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { LoggedInUser } from 'src/auth/decorators/logged-in-user.decorator';
@@ -17,11 +17,11 @@ export class CompaniesController {
 
   @ApiResponse({ status: 201, description: 'A empresa foi criada com sucesso.' })
   @ApiResponse({ status: 401, description: 'Não autorizado. Token inválido ou expirado.' })
-  @Post() // Escuta requisições POST para /companies
+  @Post()
   @ApiOperation({ summary: 'Cria uma nova empresa ligada ao escritório logado' })
   create(
     @Body() createCompanyDto: CreateCompanyDto,
-    @LoggedInUser() firmPayload: { sub: number; email: string }, // Decorator contra o erro de any do lint
+    @LoggedInUser() firmPayload: { sub: number; email: string },
   ) {
     const loggedInFirmId = firmPayload.sub;
     return this.companiesService.create(createCompanyDto, loggedInFirmId);

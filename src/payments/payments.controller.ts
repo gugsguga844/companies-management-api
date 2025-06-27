@@ -15,7 +15,7 @@ export class PaymentsController {
     @ApiOperation({ summary: 'Gera faturas para todas as empresas' })
     generatePayments
     (
-        @LoggedInUser() firmPayload: { sub: number }, // 1. Pegamos o usuário logado
+        @LoggedInUser() firmPayload: { sub: number },
         @Body() generatePaymentsDto: GeneratePaymentsDto
     ) {
         const loggedInFirmId = firmPayload.sub;

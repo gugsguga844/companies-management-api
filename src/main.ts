@@ -8,14 +8,11 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ValidationPipe que valida os dados de entrada
-  app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(new ValidationPipe());
 
-  // Filtro de exceções global
-  app.useGlobalFilters(new HttpExceptionFilter());
+    app.useGlobalFilters(new HttpExceptionFilter());
 
-  // Interceptor que padroniza as respostas de sucesso { "data": ... }
-  app.useGlobalInterceptors(new TransformInterceptor());
+    app.useGlobalInterceptors(new TransformInterceptor());
 
   app.enableVersioning({
     type: VersioningType.URI,
