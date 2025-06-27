@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterAccountingFirmDto } from 'src/auth/dto/register-accounting-firm.dto';
 import { LoginAccountingFirmDto } from 'src/auth/dto/login-accounting-firm.dto';
@@ -18,6 +18,7 @@ export class AuthController {
     }
 
     @Post('login')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Realiza login de uma empresa' })
     login(@Body() loginDto: LoginAccountingFirmDto) {
         return this.authService.login(loginDto);

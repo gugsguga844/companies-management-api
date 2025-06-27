@@ -33,6 +33,7 @@ model Company {
   accounting_fee   Decimal  @db.Decimal(10, 2)
   email            String   @unique @db.VarChar(120)
   billing_due_day  Int      @default(10)
+  is_active        Boolean  @default(true)
 
   accountingFirm   AccountingFirm @relation(fields: [accounting_firm_id], references: [id])
   accounting_firm_id Int
