@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -61,7 +62,7 @@ describe('AuthService', () => {
 
       expect(result).toBeDefined();
       expect(result.email).toEqual(registerDto.email);
-      expect(result).not.toHaveProperty('password'); // Garante que a senha foi removida
+      expect(result).not.toHaveProperty('password');
       expect(prisma.accountingFirm.create).toHaveBeenCalledWith({
         data: {
           ...registerDto,

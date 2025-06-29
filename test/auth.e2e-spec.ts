@@ -35,7 +35,7 @@ describe('AuthController (e2e)', () => {
     await app.close();
   });
 
-  describe('/auth/register (POST)', () => {
+  describe('/v1/auth/register (POST)', () => {
     it('should register a second accounting firm successfully', async () => {
       const dto = {
         name: 'Contabilidade Teste 2',
@@ -90,7 +90,7 @@ describe('AuthController (e2e)', () => {
     });
   });
 
-  describe('/auth/login (POST)', () => {
+  describe('/v1/auth/login (POST)', () => {
     it('should authenticate user and return an access token', () => {
       const loginDto = {
         email: 'test.e2e@firm.com', // Email do usuário criado no primeiro teste

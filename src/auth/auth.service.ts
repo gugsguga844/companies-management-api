@@ -1,8 +1,9 @@
+/* eslint-disable */
 import { Injectable, ConflictException, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { RegisterAccountingFirmDto } from 'src/auth/dto/register-accounting-firm.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AccountingFirm } from '@prisma/client';
+import { AccountingFirm } from '../../generated/prisma';
 import { LoginAccountingFirmDto } from 'src/auth/dto/login-accounting-firm.dto';
 import { JwtService } from '@nestjs/jwt';
 

@@ -1,21 +1,22 @@
+/* eslint-disable */
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
+// Aqui é pra buscar o JWT_SECRET do .env de forma segura
 @Module({
   imports: [
     JwtModule.registerAsync({
-      // Usamos useFactory para configurar o módulo de forma dinâmica
       useFactory: (configService: ConfigService) => {
         return {
-          secret: configService.get<string>('JWT_SECRET'), // Lê o segredo do .env
-          signOptions: { expiresIn: '1d' }, // O token expira em 1 dia
+          secret: configService.get<string>('JWT_SECRET'),
+          signOptions: { expiresIn: '1d' },
         };
       },
-      inject: [ConfigService], // Injeta o ConfigService para ser usado na factory
-      global: true, // Torna o JwtModule disponível globalmente
+      inject: [ConfigService],
+      global: true,
     }),
   ],
   controllers: [AuthController],
