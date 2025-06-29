@@ -3,7 +3,7 @@ import { Injectable, ConflictException, UnauthorizedException, NotFoundException
 import * as bcrypt from 'bcrypt';
 import { RegisterAccountingFirmDto } from 'src/auth/dto/register-accounting-firm.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AccountingFirm } from '../../generated/prisma';
+import { AccountingFirm } from '@prisma/client';
 import { LoginAccountingFirmDto } from 'src/auth/dto/login-accounting-firm.dto';
 import { JwtService } from '@nestjs/jwt';
 
