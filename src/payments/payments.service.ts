@@ -78,4 +78,36 @@ export class PaymentsService {
       },
     });
   }
+
+  async getMonthlyRevenue(accountingFirmId: number, year?: number, month?: number) {
+    const now = new Date();
+    const targetYear = year ?? now.getFullYear();
+    const targetMonth = month ?? (now.getMonth() + 1);
+
+    const start = new Date(targetYear, targetMonth - 1, 1);
+    const end = new Date(targetYear, targetMonth, 1);
+
+    const result = await this.prismaService.payment.aggregate({
+      _sum: { value: true },
+      where: {
+        status: 'PAGO',
+        reference_month: {
+          gte: start,
+          lt: end,
+        },
+        company: {
+          accounting_firm_id: accountingFirmId,
+        },
+      },
+    });
+
+    return { month: `${targetYear}-${String(targetMonth).padStart(2, '0')}`, revenue: result._sum.value ?? 0 };
+  }
+
+  async updatePayment(id: number, updatePaymentDto: import('./dto/update-payment.dto').UpdatePaymentDto) {
+    return this.prismaService.payment.update({
+      where: { id },
+      data: updatePaymentDto,
+    });
+  }
 }
