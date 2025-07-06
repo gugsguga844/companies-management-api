@@ -13,9 +13,9 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({
-  isGlobal: true,
-  envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-}),
+    isGlobal: true,
+    envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+  }),
     CompaniesModule, 
     PrismaModule, 
     AuthModule, PaymentsModule,

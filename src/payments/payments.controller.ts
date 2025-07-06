@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Query, Patch, Param } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { GeneratePaymentsDto } from './dto/generate-payments.dto';
 import { ApiOperation } from '@nestjs/swagger';
@@ -30,5 +30,29 @@ export class PaymentsController {
     ) {
         const loggedInFirmId = firmPayload.sub;
         return this.paymentsService.findAll(loggedInFirmId);
+    }
+
+    @Get('monthly-revenue')
+    @ApiOperation({ summary: 'Receita mensal (dashboard)' })
+    getMonthlyRevenue(
+      @LoggedInUser() firmPayload: { sub: number },
+      @Query('year') year?: string,
+      @Query('month') month?: string,
+    ) {
+      const loggedInFirmId = firmPayload.sub;
+      return this.paymentsService.getMonthlyRevenue(
+        loggedInFirmId,
+        year ? parseInt(year) : undefined,
+        month ? parseInt(month) : undefined,
+      );
+    }
+
+    @Patch(':id')
+    @ApiOperation({ summary: 'Atualiza status/data de pagamento da fatura' })
+    updatePayment(
+      @Param('id') id: string,
+      @Body() updatePaymentDto: import('./dto/update-payment.dto').UpdatePaymentDto,
+    ) {
+      return this.paymentsService.updatePayment(Number(id), updatePaymentDto);
     }
 }
