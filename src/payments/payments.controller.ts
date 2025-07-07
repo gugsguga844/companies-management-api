@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Controller, Post, Body, UseGuards, Get, Query, Patch, Param } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
+import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { GeneratePaymentsDto } from './dto/generate-payments.dto';
 import { ApiOperation } from '@nestjs/swagger';
 import { LoggedInUser } from 'src/auth/decorators/logged-in-user.decorator';
@@ -51,7 +52,7 @@ export class PaymentsController {
     @ApiOperation({ summary: 'Atualiza status/data de pagamento da fatura' })
     updatePayment(
       @Param('id') id: string,
-      @Body() updatePaymentDto: import('./dto/update-payment.dto').UpdatePaymentDto,
+      @Body() updatePaymentDto: UpdatePaymentDto,
     ) {
       return this.paymentsService.updatePayment(Number(id), updatePaymentDto);
     }
