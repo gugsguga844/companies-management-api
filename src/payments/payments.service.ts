@@ -87,10 +87,10 @@ export class PaymentsService {
     const start = new Date(targetYear, targetMonth - 1, 1);
     const end = new Date(targetYear, targetMonth, 1);
 
-    const result = await this.prismaService.payment.aggregate({
+    // Soma de todos os pagamentos do mês (independente do status)
+    const total = await this.prismaService.payment.aggregate({
       _sum: { value: true },
       where: {
-        status: 'PAGO',
         reference_month: {
           gte: start,
           lt: end,
@@ -101,7 +101,10 @@ export class PaymentsService {
       },
     });
 
-    return { month: `${targetYear}-${String(targetMonth).padStart(2, '0')}`, revenue: result._sum.value ?? 0 };
+    return {
+      month: `${targetYear}-${String(targetMonth).padStart(2, '0')}`,
+      total: total._sum.value ?? 0,
+    };
   }
 
   async updatePayment(id: number, updatePaymentDto: import('./dto/update-payment.dto').UpdatePaymentDto) {
